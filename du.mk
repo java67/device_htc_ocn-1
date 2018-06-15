@@ -1,5 +1,6 @@
 #
 # Copyright (C) 2017 The LineageOS Open Source Project
+# Copyright (C) 2017 The Dirty Unicorns Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,15 +18,15 @@
 # Release name
 PRODUCT_RELEASE_NAME := ocn
 
-# Inherit some common Lineage stuff.
-$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+# Inherit some common DU stuff.
+$(call inherit-product, vendor/du/config/common_full_phone.mk)
 
 # Inherit device configuration
 $(call inherit-product, device/htc/ocn/full_ocn.mk)
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := ocn
-PRODUCT_NAME := lineage_ocn
+PRODUCT_NAME := du_ocn
 PRODUCT_BRAND := HTC
 PRODUCT_MODEL := HTC U11
 PRODUCT_MANUFACTURER := HTC

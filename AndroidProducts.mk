@@ -1,11 +1,11 @@
 #
-# Copyright (C) 2016 The CyanogenMod Project
+# Copyright (C) 2017 The LineageOS Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,14 +14,5 @@
 # limitations under the License.
 #
 
-# Inherit from ocn device
-$(call inherit-product, device/htc/ocn/device.mk)
-
-$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
-
-# Device identifier. This must come after all inclusions
-PRODUCT_DEVICE := ocn 
-PRODUCT_NAME := full_ocn
-
-$(call inherit-product-if-exists, vendor/htc/ocn/ocn-vendor.mk)
+PRODUCT_MAKEFILES := \
+    $(LOCAL_DIR)/du.mk

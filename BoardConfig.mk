@@ -26,35 +26,38 @@ TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT := cortex-a73
+TARGET_CPU_VARIANT := kryo
 
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
-TARGET_2ND_CPU_VARIANT := cortex-a53
+TARGET_2ND_CPU_VARIANT := kryo
 
 TARGET_BOARD_PLATFORM := msm8998
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno540
 
 TARGET_USES_UEFI := true
 TARGET_USES_64_BIT_BINDER := true
+TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := MSM8998
+TARGET_BOOTLOADER_BOARD_NAME := msm8998
 TARGET_NO_BOOTLOADER := true
 
 # Kernel
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 user_debug=31 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1 service_locator.enable=1 swiotlb=2048 androidboot.configfs=true androidboot.usbcontroller=a800000.dwc3 androidboot.hardware=qcom androidkey.dummy=1 androidboot.fpsensor=fpc1145
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_IMAGE_NAME := Image.lz4-dtb
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_TAGS_OFFSET := 0x00000100
 BOARD_RAMDISK_OFFSET     := 0x01000000
 TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_COMPILE_WITH_MSM_KERNEL := true
 TARGET_KERNEL_SOURCE := kernel/htc/msm8998
-TARGET_KERNEL_CONFIG := lineage_ocean_defconfig
+TARGET_KERNEL_CONFIG := du_ocean_defconfig
 
 BOARD_ROOT_EXTRA_FOLDERS := bt_firmware firmware persist firmware/image dsp
 
@@ -108,7 +111,7 @@ AUDIO_FEATURE_ENABLED_VORBIS_OFFLOAD := true
 AUDIO_FEATURE_ENABLED_WMA_OFFLOAD := true
 AUDIO_USE_LL_AS_PRIMARY_OUTPUT := true
 BOARD_SUPPORTS_QAHW := true
-BOARD_SUPPORTS_SOUND_TRIGGER := true
+BOARD_SUPPORTS_SOUND_TRIGGER := false
 BOARD_USES_SRS_TRUEMEDIA := false
 DOLBY_ENABLE := false
 DTS_CODEC_M_ := false
@@ -162,7 +165,6 @@ SF_VSYNC_EVENT_PHASE_OFFSET_NS := 6000000
 
 # Dexpreopt
 WITH_DEXPREOPT := true
-WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY ?= true
 
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
@@ -180,21 +182,23 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3724541952
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 58737033216
 TARGET_FS_CONFIG_GEN += $(DEVICE_PATH)/configs/config.fs
 TARGET_EXFAT_DRIVER := exfat
+BOARD_HAS_LARGE_FILESYSTEM := true
 
 # Fingerprint
 PRODUCT_SKIP_FINGERPRINT_FROM_FILE := true
 
 # GPS
 TARGET_NO_RPC := true
+USING_DEVICE_GPS := true
 USE_DEVICE_SPECIFIC_GPS := true
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
+BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := true
 
 # HIDL
-DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/configs/manifest.xml
-DEVICE_MATRIX_FILE := $(DEVICE_PATH)/configs/compatibility_matrix.xml
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/hidl/manifest.xml
+DEVICE_MATRIX_FILE := $(DEVICE_PATH)/hidl/compatibility_matrix.xml
 
 # Init
-#TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
 TARGET_UNIFIED_DEVICE := true
 TARGET_INIT_VENDOR_LIB := libinit_ocn
 TARGET_RECOVERY_DEVICE_MODULES := libinit_ocn
@@ -206,9 +210,6 @@ TARGET_PROVIDES_KEYMASTER := true
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
 
-# Lineage Hardware
-BOARD_HARDWARE_CLASS += $(DEVICE_PATH)/lineagehw
-
 # Media
 TARGET_USES_MEDIA_EXTENSIONS := true
 
@@ -219,10 +220,6 @@ BOARD_NFC_HAL_SUFFIX := $(TARGET_BOARD_PLATFORM)
 # Power
 TARGET_POWERHAL_VARIANT := qcom
 
-# Properties
-BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
-TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
-
 # Qualcomm
 BOARD_USES_QCOM_HARDWARE := true
 BOARD_USES_QC_TIME_SERVICES := true
@@ -231,7 +228,6 @@ BOARD_USES_QC_TIME_SERVICES := true
 TARGET_RELEASETOOLS_EXTENSIONS := device/htc/ocn/releasetools
 
 # RIL
-TARGET_RIL_VARIANT := caf
 PROTOBUF_SUPPORTED := true
 
 # SELinux
@@ -255,6 +251,9 @@ WIFI_DRIVER_FW_PATH_P2P := "p2p"
 WPA_SUPPLICANT_VERSION := VER_0_8_X
 WIFI_DRIVER_OPERSTATE_PATH := "/sys/class/net/wlan0/operstate"
 
+# Enable workaround for slow rom flash
+BOARD_SUPPRESS_SECURE_ERASE := true
 
-# inherit from the proprietary version
--include vendor/htc/ocn/BoardConfigVendor.mk
+# IPACFG
+#USE_DEVICE_SPECIFIC_IPACFG_MGR := true
+#DEVICE_SPECIFIC_IPACFG-MGR_PATH := $(DEVICE_PATH)/data-ipa-cfg-mgr
